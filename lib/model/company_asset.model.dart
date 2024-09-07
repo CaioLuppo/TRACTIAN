@@ -26,6 +26,13 @@ class CompanyAsset {
   factory CompanyAsset.fromJson(Map<String, dynamic> json) {
     final sensorType = json['sensorType'];
 
+    AssetStatus? status;
+    try {
+      AssetStatus.values.firstWhere((e) => e.name == json['status']);
+    } catch (e) {
+      status = null;
+    }
+
     return CompanyAsset(
       type: sensorType == null ? AssetType.asset : AssetType.component,
       id: json['id'],
@@ -34,7 +41,7 @@ class CompanyAsset {
       sensorId: json['sensorId'],
       gatewayId: json['gatewayId'],
       locationId: json['locationId'],
-      status: AssetStatus.values.firstWhere((e) => e.name == json['status']),
+      status: status,
       sensorType: sensorType,
     );
   }
