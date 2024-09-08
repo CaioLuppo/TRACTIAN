@@ -7,6 +7,7 @@ class CompanyRepository {
   CompanyRepository(this._dioClient);
 
   /// Get a list of companies.
+  /// 
   /// --------------------------------------
   /// If the request is *successful*, it returns a list of [Company].
   /// If the request is *not successful*, it returns *null*.

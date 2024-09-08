@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:tractian/screens/home/view/home_screen.view.dart';
+import 'package:tractian/src/app_theme.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const TractianApp(),
+  );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class TractianApp extends StatelessWidget {
+  const TractianApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      theme: AppTheme.lightTheme,
+      home: const HomeScreen(),
     );
   }
 }

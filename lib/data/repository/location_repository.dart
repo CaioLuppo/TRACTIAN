@@ -7,6 +7,7 @@ class LocationRepository {
   LocationRepository(this._dioClient);
 
   /// Get a list of locations from a company.
+  /// 
   /// --------------------------------------
   /// If the request is *successful*, it returns a list of [Location].
   /// If the request is *not successful*, it returns *null*.

@@ -4,9 +4,22 @@ import 'package:tractian/src/app_colors.dart';
 
 abstract class AppTheme {
   static final lightTheme = ThemeData(
+    appBarTheme: const AppBarTheme(
+      toolbarHeight: 64,
+      centerTitle: true,
+      backgroundColor: AppColors.primary,
+      titleTextStyle: TextStyle(
+        color: AppColors.whiteFont,
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    primaryColor: AppColors.primary,
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
+      onPrimary: AppColors.whiteFont,
       secondary: AppColors.secondary,
+      onSecondary: AppColors.whiteFont,
       surface: AppColors.background,
       onSurface: AppColors.blackFont,
     ),
@@ -23,4 +36,12 @@ abstract class AppTheme {
       ),
     ),
   );
+
+  static ColorScheme getScheme() {
+    return lightTheme.colorScheme;
+  }
+
+  static TextTheme getTextTheme() {
+    return lightTheme.textTheme;
+  }
 }

@@ -7,6 +7,7 @@ class CompanyAssetRepository {
   CompanyAssetRepository(this._dioClient);
 
   /// Get a list of assets from a company.
+  /// 
   /// --------------------------------------
   /// If the request is *successful*, it returns a list of [CompanyAsset].
   /// If the request is *not successful*, it returns *null*.
