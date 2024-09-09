@@ -5,7 +5,7 @@ abstract class AppColors {
   static const secondary = Color(0xFF2188FF);
   static const background = Color(0xFFFFFFFF);
 
-  static const materialGray = MaterialColor(0xFF8E98A3, {
+  static const materialGrey = MaterialColor(0xFF8E98A3, {
     100: Color(0xFFEAEFF3),
     200: Color(0xFFD8DFE6),
     500: Color(0xFF8E98A3),
@@ -18,5 +18,4 @@ abstract class AppColors {
   static const blackFont = Color(0xFF17192D);
   static const whiteFont = Color(0xFFFFFFFF);
   static const bodyTextColor = Color(0xFF77818C);
-
 }

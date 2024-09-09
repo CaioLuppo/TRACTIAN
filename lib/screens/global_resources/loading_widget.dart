@@ -17,7 +17,7 @@ class LoadingWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const CircularProgressIndicator(),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           Text(
             message,
             style: style ?? const TextStyle(fontWeight: FontWeight.bold),

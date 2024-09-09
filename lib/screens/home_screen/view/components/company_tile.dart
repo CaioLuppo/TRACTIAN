@@ -11,7 +11,11 @@ class CompanyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => AssetsScreen(companyId: company.id)),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       tileColor: AppTheme.getScheme().secondary,
       leading: SvgPicture.asset(AppImages.companyIcon),
       contentPadding: const EdgeInsets.all(24),

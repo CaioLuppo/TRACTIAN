@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tractian/screens/home/view/home_screen.view.dart';
+import 'package:provider/provider.dart';
+import 'package:tractian/screens/assets_screen/model/store/assets_screen_store.dart';
+import 'package:tractian/screens/assets_screen/model/store/search_store.dart';
+import 'package:tractian/screens/home_screen/view/home_screen.view.dart';
 import 'package:tractian/src/app_theme.dart';
 
 void main() {
   runApp(
-    const TractianApp(),
+    MultiProvider(
+      providers: [
+        Provider(create: (_) => SearchStore()),
+        Provider(create: (_) => AssetsScreenStore()),
+      ],
+      child: const TractianApp(),
+    ),
   );
 }
 

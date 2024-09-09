@@ -1,12 +1,13 @@
-class Location {
-  final String id;
-  final String name;
-  final String? parentId;
+import 'package:tractian/model/asset.model.dart';
+import 'package:tractian/model/company_asset.model.dart';
 
+class Location extends AssetBase {
   Location({
-    required this.id,
-    required this.name,
-    required this.parentId,
+    required super.id,
+    required super.name,
+    super.parentId,
+    super.locationId,
+    super.type = AssetType.location,
   });
 
   factory Location.fromJson(Map<String, dynamic> json) {

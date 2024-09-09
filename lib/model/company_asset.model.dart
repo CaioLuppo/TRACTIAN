@@ -1,24 +1,19 @@
-class CompanyAsset {
-  AssetType type;
+import 'package:tractian/model/asset.model.dart';
 
-  final String id;
-  final String name;
-
-  final String? parentId;
+class CompanyAsset extends AssetBase {
   final String? sensorId;
   final String? gatewayId;
-  final String? locationId;
   final AssetStatus? status;
   final String? sensorType;
 
   CompanyAsset({
-    required this.type,
-    required this.id,
-    required this.name,
-    required this.parentId,
+    required super.type,
+    required super.id,
+    required super.name,
+    required super.parentId,
     required this.sensorId,
     required this.gatewayId,
-    required this.locationId,
+    required super.locationId,
     required this.status,
     required this.sensorType,
   });
@@ -28,7 +23,7 @@ class CompanyAsset {
 
     AssetStatus? status;
     try {
-      AssetStatus.values.firstWhere((e) => e.name == json['status']);
+      status = AssetStatus.values.firstWhere((e) => e.name == json['status']);
     } catch (e) {
       status = null;
     }
@@ -50,9 +45,15 @@ class CompanyAsset {
 enum AssetType {
   asset,
   component,
+  location,
 }
 
 enum AssetStatus {
   operating,
   alert,
+}
+
+enum SensorType {
+  vibration,
+  energy,
 }

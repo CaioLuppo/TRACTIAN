@@ -25,7 +25,7 @@ abstract class AppTheme {
     ),
     textTheme: TextTheme(
       bodyMedium: GoogleFonts.roboto(
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
         color: AppColors.blackFont,
       ),
