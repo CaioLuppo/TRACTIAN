@@ -5,6 +5,7 @@ class AssetBase {
   final String name;
   final String? parentId;
   final String? locationId;
+  List<AssetBase>? childrenDelegate;
   List<AssetBase> children = [];
   AssetType type;
 
@@ -14,5 +15,10 @@ class AssetBase {
     required this.name,
     required this.parentId,
     required this.locationId,
-  });
+    this.childrenDelegate,
+  }) {
+    if (childrenDelegate != null) {
+      children = childrenDelegate!;
+    }
+  }
 }

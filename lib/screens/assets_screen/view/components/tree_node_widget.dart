@@ -2,10 +2,12 @@ part of '../assets_screen.view.dart';
 
 class TreeNodeWidget extends StatelessWidget {
   final AssetBase node;
+  final bool isExpanded;
 
   const TreeNodeWidget({
     super.key,
     required this.node,
+    this.isExpanded = false,
   });
 
   @override
@@ -21,14 +23,13 @@ class TreeNodeWidget extends StatelessWidget {
           borderRadius: BorderRadius.zero,
         ),
         minTileHeight: 0,
-        title: Row(
-          children: _buildTitle(node),
-        ),
+        title: Row(children: _buildTitle(node)),
         contentPadding: const EdgeInsets.all(0),
       );
     } else {
       return ExpansionTile(
         minTileHeight: 0,
+        initiallyExpanded: isExpanded,
         tilePadding: const EdgeInsets.all(0),
         childrenPadding: const EdgeInsets.all(0),
         shape: const RoundedRectangleBorder(

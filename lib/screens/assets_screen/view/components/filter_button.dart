@@ -18,7 +18,14 @@ class FilterButton extends StatelessWidget {
 
     return Observer(
       builder: (context) {
-        final isSelected = store.filterType == filterType;
+        bool isSelected = false;
+        if (store.energyFilterEnabled &&
+            filterType == FilterType.energySensor) {
+          isSelected = true;
+        } else if (store.alertFilterEnabled &&
+            filterType == FilterType.critical) {
+          isSelected = true;
+        }
 
         return ElevatedButton(
           style: ButtonStyle(
@@ -41,7 +48,13 @@ class FilterButton extends StatelessWidget {
                   )
                 : null,
           ),
-          onPressed: () => store.setFilter(isSelected ? null : filterType),
+          onPressed: () {
+            if (filterType == FilterType.energySensor) {
+              store.toggleEnergyFilter();
+            } else if (filterType == FilterType.critical) {
+              store.toggleAlertFilter();
+            }
+          },
           child: Row(
             children: [
               SvgPicture.asset(

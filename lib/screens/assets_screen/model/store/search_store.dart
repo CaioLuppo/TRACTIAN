@@ -5,13 +5,23 @@ class SearchStore = SearchStoreBase with _$SearchStore;
 
 abstract class SearchStoreBase with Store {
   @observable
-  FilterType? filterType;
+  bool energyFilterEnabled = false;
+
+  @observable
+  bool alertFilterEnabled = false;
 
   @observable
   String? searchEntry;
 
   @action
-  void setFilter(FilterType? value) => filterType = value;
+  void toggleEnergyFilter() {
+    energyFilterEnabled = !energyFilterEnabled;
+  }
+
+  @action
+  void toggleAlertFilter() {
+    alertFilterEnabled = !alertFilterEnabled;
+  }
 
   @action
   void setSearchEntry(String value) {

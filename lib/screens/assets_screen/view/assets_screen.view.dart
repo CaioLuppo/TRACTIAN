@@ -1,6 +1,5 @@
 library assets_screen_view;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,7 +21,7 @@ part 'components/filter_button.dart';
 part 'components/filter_header.dart';
 part 'components/tree_node_widget.dart';
 
-class AssetsScreen extends StatelessWidget {
+class AssetsScreen extends StatefulWidget {
   final String companyId;
 
   const AssetsScreen({
@@ -31,10 +30,24 @@ class AssetsScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final viewModel = AssetsScreenViewModel(companyId, context);
-    viewModel.loadData();
+  State<AssetsScreen> createState() => _AssetsScreenState();
+}
 
+class _AssetsScreenState extends State<AssetsScreen> {
+  late AssetsScreenViewModel viewModel = AssetsScreenViewModel(
+    widget.companyId,
+    context,
+  );
+  late TextEditingController controller = TextEditingController();
+
+  @override
+  initState() {
+    super.initState();
+    viewModel.loadData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const ArrowBack(),
@@ -49,11 +62,22 @@ class AssetsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            header,
+            header(controller),
             const SizedBox(height: 8),
             Expanded(
               child: Observer(
                 builder: (context) {
+                  final List<TreeNodeWidget> tree = viewModel.tree != null
+                      ? viewModel.searchAssetsInTree(
+                          viewModel.tree!
+                              .map((e) => TreeNodeWidget(node: e))
+                              .toList(),
+                          controller.text,
+                          alertFilterEnabled: viewModel.alertFilterEnabled,
+                          energyFilterEnabled: viewModel.energyFilterEnabled,
+                        )
+                      : <TreeNodeWidget>[];
+
                   if (viewModel.isLoading == true) {
                     return const LoadingWidget(
                       message: AppStrings.loadingAssets,
@@ -63,16 +87,13 @@ class AssetsScreen extends StatelessWidget {
                     return const TryAgainWidget(
                       message: AppStrings.errorLoadingAssets,
                     );
-                  } else if (viewModel.tree!.isEmpty) {
+                  } else if (viewModel.tree!.isEmpty || tree.isEmpty) {
                     return const Center(child: Text(AppStrings.noAssetsFound));
                   }
 
                   return ListView.builder(
-                    itemCount: viewModel.tree!.length,
-                    itemBuilder: (context, index) {
-                      final node = viewModel.tree![index];
-                      return TreeNodeWidget(node: node);
-                    },
+                    itemCount: tree.length,
+                    itemBuilder: (context, index) => tree[index],
                   );
                 },
               ),
@@ -83,12 +104,15 @@ class AssetsScreen extends StatelessWidget {
     );
   }
 
-  Widget get header => const Column(
+  Widget header(TextEditingController controller) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AssetsSearchBar(),
-          SizedBox(height: 16),
-          FilterHeader(),
+          AssetsSearchBar(
+            controller: controller,
+            onChanged: (_) => setState(() {}),
+          ),
+          const SizedBox(height: 16),
+          const FilterHeader(),
         ],
       );
 }

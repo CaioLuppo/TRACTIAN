@@ -10,6 +10,8 @@ import 'package:tractian/model/asset.model.dart';
 import 'package:tractian/model/company_asset.model.dart';
 import 'package:tractian/model/location.model.dart';
 import 'package:tractian/screens/assets_screen/model/store/assets_screen_store.dart';
+import 'package:tractian/screens/assets_screen/model/store/search_store.dart';
+import 'package:tractian/screens/assets_screen/view/assets_screen.view.dart';
 
 class AssetsScreenViewModel {
   final String companyId;
@@ -23,17 +25,23 @@ class AssetsScreenViewModel {
 
   AssetsScreenViewModel(this.companyId, this.context);
 
-  bool? get isLoading {
-    return Provider.of<AssetsScreenStore>(context, listen: false).isLoading;
+  AssetsScreenStore get _store {
+    return Provider.of<AssetsScreenStore>(context, listen: false);
   }
 
-  List<CompanyAsset> get assets {
-    return Provider.of<AssetsScreenStore>(context, listen: false).companyAssets;
+  SearchStore get _searchStore {
+    return Provider.of<SearchStore>(context, listen: false);
   }
 
-  List<Location> get locations {
-    return Provider.of<AssetsScreenStore>(context, listen: false).locations;
-  }
+  bool? get isLoading => _store.isLoading;
+
+  List<CompanyAsset> get assets => _store.companyAssets;
+
+  List<Location> get locations => _store.locations;
+
+  bool get energyFilterEnabled => _searchStore.energyFilterEnabled;
+
+  bool get alertFilterEnabled => _searchStore.alertFilterEnabled;
 
   void loadData() async {
     final store = Provider.of<AssetsScreenStore>(context, listen: false);
@@ -152,5 +160,100 @@ class AssetsScreenViewModel {
     }
 
     return buffer.toString();
+  }
+
+  List<TreeNodeWidget> searchAssetsInTree(
+    List<TreeNodeWidget> tree,
+    String name, {
+    required bool alertFilterEnabled,
+    required bool energyFilterEnabled,
+  }) {
+    List<TreeNodeWidget> result = [];
+
+    for (var treeNode in tree) {
+      final asset = treeNode.node;
+      final matchFilters =
+          asset.name.toLowerCase().contains(name.toLowerCase()) &&
+                  name.isNotEmpty ||
+              alertFilterEnabled ||
+              energyFilterEnabled;
+      if (asset.children.isNotEmpty) {
+        final children = searchAssetsInTree(
+          asset.children.map((e) => TreeNodeWidget(node: e)).toList(),
+          name,
+          alertFilterEnabled: alertFilterEnabled,
+          energyFilterEnabled: energyFilterEnabled,
+        );
+
+        if (children.isNotEmpty) {
+          result.add(
+            TreeNodeWidget(
+              isExpanded: matchFilters,
+              node: AssetBase(
+                type: asset.type,
+                id: asset.id,
+                name: asset.name,
+                parentId: asset.parentId,
+                locationId: asset.locationId,
+                childrenDelegate: children.map((e) => e.node).toList(),
+              ),
+            ),
+          );
+          continue;
+        }
+      }
+      if (!asset.name.toLowerCase().contains(name.toLowerCase()) &&
+          name.isNotEmpty) {
+        continue;
+      }
+
+      if (alertFilterEnabled || energyFilterEnabled) {
+        if (asset is! CompanyAsset) {
+          continue;
+        }
+
+        if (alertFilterEnabled && asset.status != AssetStatus.alert) {
+          continue;
+        }
+
+        if (energyFilterEnabled && asset.sensorType != SensorType.energy.name) {
+          continue;
+        }
+      }
+
+      if (asset is CompanyAsset) {
+        result.add(
+          TreeNodeWidget(
+            isExpanded: matchFilters,
+            node: CompanyAsset(
+              type: asset.type,
+              id: asset.id,
+              name: asset.name,
+              parentId: asset.parentId,
+              sensorId: asset.sensorId,
+              gatewayId: asset.gatewayId,
+              locationId: asset.locationId,
+              status: asset.status,
+              sensorType: asset.sensorType,
+            )..children = asset.children,
+          ),
+        );
+      } else {
+        result.add(
+          TreeNodeWidget(
+            isExpanded: matchFilters,
+            node: Location(
+              type: asset.type,
+              id: asset.id,
+              name: asset.name,
+              parentId: asset.parentId,
+              locationId: asset.locationId,
+            )..children = asset.children,
+          ),
+        );
+      }
+    }
+
+    return result;
   }
 }
