@@ -94,17 +94,6 @@ mixin _$AssetsScreenStore on AssetsScreenStoreBase, Store {
   }
 
   @override
-  void dispose() {
-    final _$actionInfo = _$AssetsScreenStoreBaseActionController.startAction(
-        name: 'AssetsScreenStoreBase.dispose');
-    try {
-      return super.dispose();
-    } finally {
-      _$AssetsScreenStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 isLoading: ${isLoading},

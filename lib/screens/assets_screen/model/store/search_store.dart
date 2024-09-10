@@ -33,7 +33,7 @@ abstract class SearchStoreBase with Store {
   }
 
   @action
-  void dispose() {
+  void reset() {
     energyFilterEnabled = false;
     alertFilterEnabled = false;
     searchEntry = null;

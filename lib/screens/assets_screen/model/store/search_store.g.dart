@@ -94,17 +94,6 @@ mixin _$SearchStore on SearchStoreBase, Store {
   }
 
   @override
-  void dispose() {
-    final _$actionInfo = _$SearchStoreBaseActionController.startAction(
-        name: 'SearchStoreBase.dispose');
-    try {
-      return super.dispose();
-    } finally {
-      _$SearchStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 energyFilterEnabled: ${energyFilterEnabled},

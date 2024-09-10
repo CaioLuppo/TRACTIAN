@@ -50,20 +50,26 @@ class AssetsScreenViewModel {
 
   /// Load the assets and locations data.
   void loadData() async {
-    final store = Provider.of<AssetsScreenStore>(context, listen: false);
+    _store.reset();
+    _searchStore.reset();
 
-    store.setIsLoading(true);
+    _store.setIsLoading(true);
 
     final locations = await _locationRepository.getLocations(companyId);
     final assets = await _companyAssetRepository.getAssets(companyId);
 
-    if (locations != null) store.setLocations(locations);
-    if (assets != null) store.setCompanyAssets(assets);
+    if (locations == null && assets == null) {
+      _store.setIsLoading(false);
+      return;
+    }
 
+    if (locations != null) _store.setLocations(locations);
+    if (assets != null) _store.setCompanyAssets(assets);
+    
     final rawTree = await getAssetsTree();
     tree = sortChildren(rawTree);
 
-    store.setIsLoading(false);
+    _store.setIsLoading(false);
   }
 
   /// Sort the assets tree by the following criteria:
@@ -283,8 +289,4 @@ class AssetsScreenViewModel {
     return search;
   }
 
-  void dispose() {
-    _store.dispose();
-    _searchStore.dispose();
-  }
 }

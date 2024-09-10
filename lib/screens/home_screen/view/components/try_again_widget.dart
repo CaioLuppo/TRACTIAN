@@ -21,6 +21,7 @@ class TryAgainWidget extends StatelessWidget {
           Text(
             message,
             style: style ?? const TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           ElevatedButton(

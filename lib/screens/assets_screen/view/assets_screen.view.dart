@@ -116,7 +116,6 @@ class _AssetsScreenState extends State<AssetsScreen> {
   @override
   void dispose() {
     controller.dispose();
-    viewModel.dispose();
     super.dispose();
   }
 }

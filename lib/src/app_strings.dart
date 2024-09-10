@@ -1,7 +1,8 @@
 abstract class AppStrings {
   // HomeScreen
   static const String loadingUnits = 'Carregando unidades...';
-  static const String errorLoadingUnits = 'Erro ao carregar unidades';
+  static const String errorLoadingUnits =
+      'Erro ao carregar unidades!\nVerifique sua conexão.';
   static const String noUnitsFound = 'Nenhuma unidade encontrada';
   static const String unit = 'Unit';
 
@@ -11,7 +12,8 @@ abstract class AppStrings {
   static const String energySensor = 'Sensor de Energia';
   static const String critical = 'Crítico';
   static const String noAssetsFound = 'Nenhum ativo encontrado';
-  static const String errorLoadingAssets = 'Erro ao carregar ativos';
+  static const String errorLoadingAssets =
+      'Erro ao carregar ativos!\nVerifique sua conexão.';
   static const String loadingAssets = 'Carregando ativos...';
 
   // Global

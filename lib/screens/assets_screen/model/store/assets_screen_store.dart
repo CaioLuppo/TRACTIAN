@@ -32,9 +32,9 @@ abstract class AssetsScreenStoreBase with Store {
   }
 
   @action
-  void dispose() {
-    isLoading = false;
+  void reset() {
     companyAssets.clear();
     locations.clear();
+    isLoading = false;
   }
 }
