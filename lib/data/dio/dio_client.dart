@@ -22,9 +22,14 @@ class DioClient {
 
   /// Performs a GET request to the API.
   Future<Response> get(String path, {String? logId}) async {
-    final response = await _dio.get(path);
-    _logResponse(response, 'GET - ${logId ?? path}');
-    return response;
+    try {
+      final response = await _dio.get(path);
+      _logResponse(response, 'GET - ${logId ?? path}');
+      return response;
+    } catch (e) {
+      _logger.e('Error on GET - ${logId ?? path}: $e');
+      return Response(requestOptions: RequestOptions(path: path), statusCode: -1);
+    }
   }
 
   /// Logs the response of a request with an id. If the status code is not 200, it logs as an error.

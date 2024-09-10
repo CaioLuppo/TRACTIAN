@@ -31,6 +31,13 @@ abstract class SearchStoreBase with Store {
       searchEntry = value;
     }
   }
+
+  @action
+  void dispose() {
+    energyFilterEnabled = false;
+    alertFilterEnabled = false;
+    searchEntry = null;
+  }
 }
 
 enum FilterType { energySensor, critical }

@@ -30,4 +30,11 @@ abstract class AssetsScreenStoreBase with Store {
     locations.clear();
     locations.addAll(value);
   }
+
+  @action
+  void dispose() {
+    isLoading = false;
+    companyAssets.clear();
+    locations.clear();
+  }
 }

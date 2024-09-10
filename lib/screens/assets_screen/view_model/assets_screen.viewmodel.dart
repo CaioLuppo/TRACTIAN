@@ -1,5 +1,6 @@
 import 'dart:isolate';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -19,9 +20,11 @@ class AssetsScreenViewModel {
   List<AssetBase>? tree;
 
   AssetsScreenViewModel(this.companyId, this.context);
-  
-  final CompanyAssetRepository _companyAssetRepository = CompanyAssetRepository(DioClient());
-  final LocationRepository _locationRepository = LocationRepository(DioClient());
+
+  final CompanyAssetRepository _companyAssetRepository =
+      CompanyAssetRepository(DioClient());
+  final LocationRepository _locationRepository =
+      LocationRepository(DioClient());
 
   // AssetsScreenStore
 
@@ -87,7 +90,7 @@ class AssetsScreenViewModel {
   /// Get the assets tree, logging the tree structure.
   Future<List<AssetBase>> getAssetsTree() async {
     final tree = await buildTreeInIsolate([...locations, ...assets], null);
-    Logger().d(_getTreeString(tree));
+    if (kDebugMode) Logger().d(_getTreeString(tree));
 
     return tree;
   }
@@ -167,7 +170,7 @@ class AssetsScreenViewModel {
   }
 
   /// Search assets in the tree and return a new tree with the search results.
-  List<TreeNodeWidget> searchAssetsInTree(
+  List<TreeNodeWidget> startSearchingAssetsInTree(
     List<TreeNodeWidget> tree,
     String name, {
     required bool alertFilterEnabled,
@@ -183,7 +186,7 @@ class AssetsScreenViewModel {
               alertFilterEnabled ||
               energyFilterEnabled;
       if (asset.children.isNotEmpty) {
-        final children = searchAssetsInTree(
+        final children = startSearchingAssetsInTree(
           asset.children.map((e) => TreeNodeWidget(node: e)).toList(),
           name,
           alertFilterEnabled: alertFilterEnabled,
@@ -260,5 +263,28 @@ class AssetsScreenViewModel {
     }
 
     return result;
+  }
+
+  /// Start the search process and set the loading state.
+  List<TreeNodeWidget> searchAssetsInTree(
+    List<TreeNodeWidget> tree,
+    String name, {
+    required bool alertFilterEnabled,
+    required bool energyFilterEnabled,
+  }) {
+    _store.setIsLoading(true);
+    final search = startSearchingAssetsInTree(
+      tree,
+      name,
+      alertFilterEnabled: alertFilterEnabled,
+      energyFilterEnabled: energyFilterEnabled,
+    );
+    _store.setIsLoading(false);
+    return search;
+  }
+
+  void dispose() {
+    _store.dispose();
+    _searchStore.dispose();
   }
 }
