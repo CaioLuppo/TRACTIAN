@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           final companies = snapshot.data!;
-
           if (companies.isEmpty) {
             return const Center(child: Text(AppStrings.noUnitsFound));
           }

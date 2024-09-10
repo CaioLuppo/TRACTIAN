@@ -5,7 +5,7 @@ import 'package:tractian/model/company.model.dart';
 class HomeScreenViewModel {
   final CompanyRepository _companyRepository = CompanyRepository(DioClient());
 
-  
+  /// Get companies from the API.
   Future<List<Company>?> getCompanies() async {
     return await _companyRepository.getCompanies();
   }

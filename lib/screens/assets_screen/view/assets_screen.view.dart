@@ -53,66 +53,63 @@ class _AssetsScreenState extends State<AssetsScreen> {
         leading: const ArrowBack(),
         title: Text(
           AppStrings.assets,
-          style: AppTheme.getTextTheme().displayMedium?.copyWith(
-                fontWeight: FontWeight.w400,
-              ),
+          style: AppTheme.getTextTheme()
+              .displayMedium
+              ?.copyWith(fontWeight: FontWeight.w400),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            header(controller),
-            const SizedBox(height: 8),
-            Expanded(
-              child: Observer(
-                builder: (context) {
-                  final List<TreeNodeWidget> tree = viewModel.tree != null
-                      ? viewModel.searchAssetsInTree(
-                          viewModel.tree!
-                              .map((e) => TreeNodeWidget(node: e))
-                              .toList(),
-                          controller.text,
-                          alertFilterEnabled: viewModel.alertFilterEnabled,
-                          energyFilterEnabled: viewModel.energyFilterEnabled,
-                        )
-                      : <TreeNodeWidget>[];
-
-                  if (viewModel.isLoading == true) {
-                    return const LoadingWidget(
-                      message: AppStrings.loadingAssets,
-                    );
-                  } else if (viewModel.isLoading == null ||
-                      viewModel.tree == null) {
-                    return const TryAgainWidget(
-                      message: AppStrings.errorLoadingAssets,
-                    );
-                  } else if (viewModel.tree!.isEmpty || tree.isEmpty) {
-                    return const Center(child: Text(AppStrings.noAssetsFound));
-                  }
-
-                  return ListView.builder(
-                    itemCount: tree.length,
-                    itemBuilder: (context, index) => tree[index],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+        child: Column(children: [header, const SizedBox(height: 8), tree]),
       ),
     );
   }
 
-  Widget header(TextEditingController controller) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AssetsSearchBar(
-            controller: controller,
-            onChanged: (_) => setState(() {}),
-          ),
-          const SizedBox(height: 16),
-          const FilterHeader(),
-        ],
-      );
+  Expanded get tree {
+    return Expanded(
+      child: Observer(
+        builder: (context) {
+          final List<TreeNodeWidget> tree = viewModel.tree != null
+              ? viewModel.searchAssetsInTree(
+                  viewModel.tree!.map((e) => TreeNodeWidget(node: e)).toList(),
+                  controller.text,
+                  alertFilterEnabled: viewModel.alertFilterEnabled,
+                  energyFilterEnabled: viewModel.energyFilterEnabled,
+                )
+              : <TreeNodeWidget>[];
+
+          if (viewModel.isLoading == true) {
+            return const LoadingWidget(
+              message: AppStrings.loadingAssets,
+            );
+          } else if (viewModel.isLoading == null || viewModel.tree == null) {
+            return const TryAgainWidget(
+              message: AppStrings.errorLoadingAssets,
+            );
+          } else if (viewModel.tree!.isEmpty || tree.isEmpty) {
+            return const Center(child: Text(AppStrings.noAssetsFound));
+          }
+
+          return ListView.builder(
+            itemCount: tree.length,
+            itemBuilder: (context, index) => tree[index],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget get header {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AssetsSearchBar(
+          controller: controller,
+          onChanged: (_) => setState(() {}),
+        ),
+        const SizedBox(height: 16),
+        const FilterHeader(),
+      ],
+    );
+  }
 }

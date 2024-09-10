@@ -18,19 +18,15 @@ class AssetsScreenViewModel {
   final BuildContext context;
   List<AssetBase>? tree;
 
-  final CompanyAssetRepository _companyAssetRepository =
-      CompanyAssetRepository(DioClient());
-  final LocationRepository _locationRepository =
-      LocationRepository(DioClient());
-
   AssetsScreenViewModel(this.companyId, this.context);
+  
+  final CompanyAssetRepository _companyAssetRepository = CompanyAssetRepository(DioClient());
+  final LocationRepository _locationRepository = LocationRepository(DioClient());
+
+  // AssetsScreenStore
 
   AssetsScreenStore get _store {
     return Provider.of<AssetsScreenStore>(context, listen: false);
-  }
-
-  SearchStore get _searchStore {
-    return Provider.of<SearchStore>(context, listen: false);
   }
 
   bool? get isLoading => _store.isLoading;
@@ -39,10 +35,17 @@ class AssetsScreenViewModel {
 
   List<Location> get locations => _store.locations;
 
+  // SearchStore
+
+  SearchStore get _searchStore {
+    return Provider.of<SearchStore>(context, listen: false);
+  }
+
   bool get energyFilterEnabled => _searchStore.energyFilterEnabled;
 
   bool get alertFilterEnabled => _searchStore.alertFilterEnabled;
 
+  /// Load the assets and locations data.
   void loadData() async {
     final store = Provider.of<AssetsScreenStore>(context, listen: false);
 
@@ -60,6 +63,9 @@ class AssetsScreenViewModel {
     store.setIsLoading(false);
   }
 
+  /// Sort the assets tree by the following criteria:
+  /// - If the asset has children and the other doesn't, the one with children comes first.
+  /// - If both have children or don't have children, sort by name.
   List<AssetBase> sortChildren(List<AssetBase> children) {
     children.sort((a, b) {
       if (a.children.isNotEmpty && b.children.isEmpty) {
@@ -78,6 +84,7 @@ class AssetsScreenViewModel {
     return children;
   }
 
+  /// Get the assets tree, logging the tree structure.
   Future<List<AssetBase>> getAssetsTree() async {
     final tree = await buildTreeInIsolate([...locations, ...assets], null);
     Logger().d(_getTreeString(tree));
@@ -85,11 +92,10 @@ class AssetsScreenViewModel {
     return tree;
   }
 
-  // Função recursiva para construir a árvore de pais e filhos
+  /// Build the assets tree recursively.
   static List<AssetBase> _buildTree(List<AssetBase> assets, String? parentId) {
     List<AssetBase> tree = [];
 
-    // Filtra os assets que têm o 'parentId' correspondente
     for (var asset in assets.where(
       (a) {
         final parentIdEqual = a.parentId == parentId && a.locationId == null;
@@ -97,7 +103,6 @@ class AssetsScreenViewModel {
         return parentIdEqual || locationIdEqual;
       },
     )) {
-      // Recursivamente busca os filhos desse nó
       asset.children = _buildTree(assets, asset.id);
       tree.add(asset);
     }
@@ -105,9 +110,8 @@ class AssetsScreenViewModel {
     return tree;
   }
 
-  // Função a ser executada no isolate
+  /// Handle the assets tree build in an isolate.
   static void _buildTreeIsolate(SendPort sendPort) async {
-    // Recebe os dados enviados para o isolate
     final port = ReceivePort();
     sendPort.send(port.sendPort);
 
@@ -116,14 +120,13 @@ class AssetsScreenViewModel {
       final parentId = message[1] as String?;
       final responsePort = message[2] as SendPort;
 
-      // Constrói a árvore no isolate
       final tree = _buildTree(assets, parentId);
 
-      // Envia o resultado de volta
       responsePort.send(tree);
     }
   }
 
+  /// Call the assets tree build method in an isolate, to avoid blocking the main thread.
   Future<List<AssetBase>> buildTreeInIsolate(
       List<AssetBase> assets, String? parentId) async {
     final responsePort = ReceivePort();
@@ -145,6 +148,7 @@ class AssetsScreenViewModel {
     return tree;
   }
 
+  /// Return a string representation of the tree for debugging purposes.
   String _getTreeString(List<AssetBase> tree, [int level = 0]) {
     StringBuffer buffer = StringBuffer();
 
@@ -162,6 +166,7 @@ class AssetsScreenViewModel {
     return buffer.toString();
   }
 
+  /// Search assets in the tree and return a new tree with the search results.
   List<TreeNodeWidget> searchAssetsInTree(
     List<TreeNodeWidget> tree,
     String name, {

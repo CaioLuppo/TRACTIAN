@@ -20,6 +20,7 @@ class DioClient {
     _dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
   }
 
+  /// Performs a GET request to the API.
   Future<Response> get(String path, {String? logId}) async {
     final response = await _dio.get(path);
     _logResponse(response, 'GET - ${logId ?? path}');
