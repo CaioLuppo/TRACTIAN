@@ -16,6 +16,7 @@ class CompanyAsset extends AssetBase {
     required super.locationId,
     required this.status,
     required this.sensorType,
+    super.isExpanded,
   });
 
   factory CompanyAsset.fromJson(Map<String, dynamic> json) {

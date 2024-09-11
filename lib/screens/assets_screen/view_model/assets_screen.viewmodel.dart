@@ -1,8 +1,6 @@
 import 'dart:isolate';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:tractian/data/dio/dio_client.dart';
 import 'package:tractian/data/repository/company_asset_repository.dart';
@@ -18,7 +16,7 @@ class AssetsScreenViewModel {
   final String companyId;
   final BuildContext context;
   List<AssetBase>? tree;
-  List<TreeNodeWidget>? searchTree;
+  List<AssetBase>? searchTree;
   String searchText = '';
 
   final searchResponsePort = ReceivePort();
@@ -31,7 +29,7 @@ class AssetsScreenViewModel {
     searchResultPort.listen(
       (message) {
         debugPrint('Search result: $message');
-        searchTree = message as List<TreeNodeWidget>;
+        searchTree = message as List<AssetBase>;
         _store.setIsLoading(false);
       },
     );
@@ -55,6 +53,10 @@ class AssetsScreenViewModel {
   List<Location> get locations => _store.locations;
 
   bool get canInteract => _store.canInteract;
+
+  void setLoading(bool value) {
+    _store.setIsLoading(value);
+  }
 
   // SearchStore
 
@@ -132,7 +134,7 @@ class AssetsScreenViewModel {
   /// Get the assets tree, logging the tree structure.
   Future<List<AssetBase>> getAssetsTree() async {
     final tree = await buildTreeInIsolate([...locations, ...assets], null);
-    if (kDebugMode) Logger().d(_getTreeString(tree));
+    // if (kDebugMode) Logger().d(_getTreeString(tree));
 
     return tree;
   }
@@ -194,21 +196,21 @@ class AssetsScreenViewModel {
   }
 
   /// Search assets in the tree and return a new tree with the search results.
-  static List<TreeNodeWidget> _startSearchingAssetsInTree(
-    List<TreeNodeWidget> tree,
+  static List<AssetBase> _startSearchingAssetsInTree(
+    List<AssetBase> tree,
     String name, {
     required bool alertFilterEnabled,
     required bool energyFilterEnabled,
   }) {
-    List<TreeNodeWidget> result = [];
+    List<AssetBase> result = [];
 
     for (var treeNode in tree) {
-      final asset = treeNode.node;
+      final asset = treeNode;
       final matchFilters =
           name.isNotEmpty || alertFilterEnabled || energyFilterEnabled;
       if (asset.children.isNotEmpty) {
         final children = _startSearchingAssetsInTree(
-          asset.children.map((e) => TreeNodeWidget(node: e)).toList(),
+          asset.children,
           name,
           alertFilterEnabled: alertFilterEnabled,
           energyFilterEnabled: energyFilterEnabled,
@@ -216,16 +218,14 @@ class AssetsScreenViewModel {
 
         if (children.isNotEmpty) {
           result.add(
-            TreeNodeWidget(
+            AssetBase(
+              type: asset.type,
+              id: asset.id,
+              name: asset.name,
+              parentId: asset.parentId,
+              locationId: asset.locationId,
+              childrenDelegate: children,
               isExpanded: matchFilters,
-              node: AssetBase(
-                type: asset.type,
-                id: asset.id,
-                name: asset.name,
-                parentId: asset.parentId,
-                locationId: asset.locationId,
-                childrenDelegate: children.map((e) => e.node).toList(),
-              ),
             ),
           );
           continue;
@@ -252,33 +252,29 @@ class AssetsScreenViewModel {
 
       if (asset is CompanyAsset) {
         result.add(
-          TreeNodeWidget(
+          CompanyAsset(
+            type: asset.type,
+            id: asset.id,
+            name: asset.name,
+            parentId: asset.parentId,
+            sensorId: asset.sensorId,
+            gatewayId: asset.gatewayId,
+            locationId: asset.locationId,
+            status: asset.status,
+            sensorType: asset.sensorType,
             isExpanded: matchFilters,
-            node: CompanyAsset(
-              type: asset.type,
-              id: asset.id,
-              name: asset.name,
-              parentId: asset.parentId,
-              sensorId: asset.sensorId,
-              gatewayId: asset.gatewayId,
-              locationId: asset.locationId,
-              status: asset.status,
-              sensorType: asset.sensorType,
-            )..children = asset.children,
-          ),
+          )..children = asset.children,
         );
       } else {
         result.add(
-          TreeNodeWidget(
+          Location(
+            type: asset.type,
+            id: asset.id,
+            name: asset.name,
+            parentId: asset.parentId,
+            locationId: asset.locationId,
             isExpanded: matchFilters,
-            node: Location(
-              type: asset.type,
-              id: asset.id,
-              name: asset.name,
-              parentId: asset.parentId,
-              locationId: asset.locationId,
-            )..children = asset.children,
-          ),
+          )..children = asset.children,
         );
       }
     }
@@ -292,7 +288,7 @@ class AssetsScreenViewModel {
     sendPort.send(port.sendPort);
 
     await for (var message in port) {
-      final tree = message[0] as List<TreeNodeWidget>;
+      final tree = message[0] as List<AssetBase>;
       final name = message[1] as String;
       final alertFilterEnabled = message[2] as bool;
       final energyFilterEnabled = message[3] as bool;
@@ -313,7 +309,10 @@ class AssetsScreenViewModel {
   Future<void> searchAssetsInTreeInIsolate() async {
     _store.setIsLoading(true);
     await Future.delayed(
-        const Duration(milliseconds: 100), () {}); // Grants tile expansion
+      // Grants tile expansion
+      const Duration(milliseconds: 100),
+      () {},
+    );
     if (!alreadySpawned) {
       alreadySpawned = true;
       _searchIsolate ??= await Isolate.spawn(
@@ -323,7 +322,7 @@ class AssetsScreenViewModel {
       _sendPort ??= await searchResponsePort.first as SendPort;
     }
     _sendPort?.send([
-      tree?.map((e) => TreeNodeWidget(node: e)).toList() ?? [],
+      tree ?? [],
       searchText,
       alertFilterEnabled,
       energyFilterEnabled,

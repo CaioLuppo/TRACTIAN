@@ -7,6 +7,7 @@ class Location extends AssetBase {
     required super.name,
     super.parentId,
     super.locationId,
+    super.isExpanded,
     super.type = AssetType.location,
   });
 

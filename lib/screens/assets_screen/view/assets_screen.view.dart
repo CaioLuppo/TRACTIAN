@@ -1,5 +1,7 @@
 library assets_screen_view;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -87,11 +89,14 @@ class _AssetsScreenState extends State<AssetsScreen> {
             return const Center(child: Text(AppStrings.noAssetsFound));
           }
 
-          final tree = viewModel.searchTree ?? viewModel.tree!.map((e) => TreeNodeWidget(node: e)).toList();
+          final tree = viewModel.searchTree ?? viewModel.tree!;
 
           return ListView.builder(
             itemCount: tree.length,
-            itemBuilder: (context, index) => tree[index],
+            itemBuilder: (context, index) {
+              final node = tree[index];
+              return TreeNodeWidget(node: node, isExpanded: node.isExpanded);
+            },
           );
         },
       ),
@@ -102,22 +107,26 @@ class _AssetsScreenState extends State<AssetsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Observer(
-          builder: (context) {
-            return AssetsSearchBar(
-              controller: controller,
-              disabled: !viewModel.canInteract,
-              onChanged: (text) async {
-                if (viewModel.tree != null) {
-                  debugPrint('Searching');
-                  viewModel.searchText = text;
-                  await viewModel.searchAssetsInTreeInIsolate();
-                }
-                setState(() {});
-              },
-            );
-          }
-        ),
+        Observer(builder: (context) {
+          return AssetsSearchBar(
+            controller: controller,
+            disabled: !viewModel.canInteract,
+            onChanged: (text) async {
+              viewModel.setLoading(true);
+              Debouncer(milliseconds: 500).run(
+                () {
+                  if (viewModel.tree != null) {
+                    debugPrint('Searching');
+                    viewModel.searchText = text;
+                    viewModel.searchAssetsInTreeInIsolate().then(
+                          (_) => setState(() {}),
+                        );
+                  }
+                },
+              );
+            },
+          );
+        }),
         const SizedBox(height: 16),
         FilterHeader(
           viewModel: viewModel,
@@ -132,5 +141,17 @@ class _AssetsScreenState extends State<AssetsScreen> {
     controller.dispose();
     viewModel.dispose();
     super.dispose();
+  }
+}
+
+class Debouncer {
+  final int milliseconds;
+  static Timer? _timer;
+
+  Debouncer({required this.milliseconds});
+
+  run(VoidCallback action) {
+    _timer?.cancel();
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
