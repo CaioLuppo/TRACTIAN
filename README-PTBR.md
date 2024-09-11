@@ -19,10 +19,10 @@ O desafio consiste em criar um aplicativo mobile que consuma a API da Tractian e
 
 ## O que poderia ser melhorado 🤔
 - Os dados poderiam ser armazenados em um banco de dados local para melhorar o uso offline, usando, por exemplo, SQFLite e Floor.
-- A função recursiva que constrói a árvore poderia ser otimizada para evitar reconstruções desnecessárias, ou até usar uma abordagem diferente para montar a árvore.
+- A função recursiva que constrói a árvore poderia ser otimizada para evitar mal desempenho, ou até usar uma abordagem diferente para montar a árvore.
 - Uma abordagem melhor usando isolates para a funcionalidade de busca, a fim de evitar **congelamentos ao filtrar** muitos dados como na **terceira unidade**.
 - Mais filtros de busca, além dos solicitados no desafio.
-- **(API)** - Em um cenário real, a API poderia ter uma estrutura melhor para evitar retrabalho de dados desnecessário, como reordenar os dados para montar a árvore.
+- **(API)** - Em um cenário real, a API poderia ter uma estrutura melhor para evitar rework desnecessário de dados, como reordenar os dados na hora de montar a árvore.
 
 ## O que eu aprendi 📚
 - Mais sobre os isolates do Flutter e como usá-los em cenários diferentes dos que eu já havia utilizado.
@@ -33,10 +33,10 @@ O desafio consiste em criar um aplicativo mobile que consuma a API da Tractian e
 - **Isolates** - Para melhor performance na funcionalidade de busca.
 - **Provider** e **MobX** - Para gerenciamento de estado.
 - **Dio** - Para requisições HTTP.
-- **dio_cache_interceptor** - Para cachear requisições HTTP.
-- **Logger** - Para logs melhores e mais elegantes.
+- **dio_cache_interceptor** - Para cachear/armazenar requisições HTTP.
+- **Logger** - Para logs melhores e mais agradáveis.
 - **flutter_svg** - Para suporte a SVG.
-- **Mocktail** - Para testar repositórios.
+- **Mocktail** - Para testar os repositórios.
 
 ## Agradecimentos! 🙏
 - **TRACTIAN** - Pela oportunidade de participar deste desafio e aprimorar minhas habilidades de programação com este projeto incrível!
