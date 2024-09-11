@@ -8,6 +8,7 @@
 - [My Touches 🎨](#my-touches-)
 - [Thank You! 🙏](#thank-you-)
 <br>
+
 ## Challenge 🐱‍👤
 The challenge is to create a mobile application that consumes the Tractian API and displays the data in a user-friendly tree structure, allowing the results to be filtered by name, status (critical) and sensor type (energy).
 
