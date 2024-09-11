@@ -9,6 +9,7 @@
 - [Meus Toques 🎨](#meus-toques-)
 - [Agradecimentos! 🙏](#agradecimentos-)
 <br>
+
 ## Desafio 🐱‍👤
 O desafio consiste em criar um aplicativo mobile que consuma a API da Tractian e exiba os dados em uma estrutura de árvore amigável, permitindo que os resultados sejam filtrados por nome, estado (crítico) e tipo de sensor (energia).
 
