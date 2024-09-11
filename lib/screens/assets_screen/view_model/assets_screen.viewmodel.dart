@@ -25,7 +25,7 @@ class AssetsScreenViewModel {
   final searchResultPort = ReceivePort();
   Isolate? _searchIsolate;
   SendPort? _sendPort;
-  static bool alreadySpawned = false;
+  bool alreadySpawned = false;
 
   AssetsScreenViewModel(this.companyId, this.context) {
     searchResultPort.listen(
