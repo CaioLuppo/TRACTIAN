@@ -1,5 +1,7 @@
 # TRACTIAN - Desafio Mobile (Versão em inglês: <a href="./README.dart">clique aqui</a>)
 
+Faça o download aqui: <a href="https://github.com/CaioLuppo/TRACTIAN/releases/download/v1.0.0/challenge_app-v1.0.0.apk">Baixar APP</a>
+
 ## Sumário
 
 - [Desafio 🐱‍👤](#desafio-)
