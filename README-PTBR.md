@@ -29,7 +29,7 @@ O desafio consiste em criar um aplicativo mobile que consuma a API da Tractian e
 - Alternativas e formas de otimizar funções recursivas.
 
 ## Meus Toques 🎨
-- **MVVM*** - Para melhor organização e arquitetura.
+- **MVVM** - Para melhor organização e arquitetura.
 - **Isolates** - Para melhor performance na funcionalidade de busca.
 - **Provider** e **MobX** - Para gerenciamento de estado.
 - **Dio** - Para requisições HTTP.

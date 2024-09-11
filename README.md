@@ -30,7 +30,7 @@ The challenge is to create a mobile application that consumes the Tractian API a
 - Recursive functions roundabouts and ways to optimize them.
 
 ## My Touches 🎨
-- **MVVM*** - For better organization and architecture.
+- **MVVM** - For better organization and architecture.
 - **Isolates** - For better performance in the search feature.
 - **Provider** and **MobX** - For state management.
 - **Dio** - For HTTP requests.
