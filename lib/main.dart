@@ -7,6 +7,7 @@ import 'package:tractian/screens/home_screen/view/home_screen.view.dart';
 import 'package:tractian/src/app_theme.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
