@@ -113,7 +113,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
             disabled: !viewModel.canInteract,
             onChanged: (text) async {
               viewModel.setLoading(true);
-              Debouncer(milliseconds: 500).run(
+              Debouncer(milliseconds: 350).run(
                 () {
                   if (viewModel.tree != null) {
                     debugPrint('Searching');
