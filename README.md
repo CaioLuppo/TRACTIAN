@@ -4,7 +4,7 @@
 The challenge is to create a mobile application that consumes the Tractian API and displays the data in a user-friendly tree structure, allowing the results to be filtered by name, status (critical) and sensor type (energy).
 
 ### Showcase Video 🎥
-[![Showcase Video]](/github/video.mp4)
+[![Showcase Video](https://img.youtube.com/vi/lB086EoCvzg/0.jpg)](https://youtu.be/lB086EoCvzg)
 
 ## What could be done better 🤔
 - The data could be stored in a local database to allow better offline usage, using SQFLite and Floor for example.
