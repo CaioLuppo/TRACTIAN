@@ -2,15 +2,13 @@
 
 ## Sumário
 
-- [TRACTIAN - Desafio Mobile (Versão em inglês: clique aqui)](#tractian---desafio-mobile-versão-em-inglês-clique-aqui)
-  - [Sumário](#sumário)
-  - [Desafio 🐱‍👤](#desafio-)
-  - [Vídeo de Demonstração 🎥](#vídeo-de-demonstração-)
-  - [O que poderia ser melhorado 🤔](#o-que-poderia-ser-melhorado-)
-  - [O que eu aprendi 📚](#o-que-eu-aprendi-)
-  - [Meus Toques 🎨](#meus-toques-)
-  - [Agradecimentos! 🙏](#agradecimentos-)
-
+- [Desafio 🐱‍👤](#desafio-)
+- [Vídeo de Demonstração 🎥](#vídeo-de-demonstração-)
+- [O que poderia ser melhorado 🤔](#o-que-poderia-ser-melhorado-)
+- [O que eu aprendi 📚](#o-que-eu-aprendi-)
+- [Meus Toques 🎨](#meus-toques-)
+- [Agradecimentos! 🙏](#agradecimentos-)
+<br>
 ## Desafio 🐱‍👤
 O desafio consiste em criar um aplicativo mobile que consuma a API da Tractian e exiba os dados em uma estrutura de árvore amigável, permitindo que os resultados sejam filtrados por nome, estado (crítico) e tipo de sensor (energia).
 
