@@ -11,6 +11,9 @@ abstract class AssetsScreenStoreBase with Store {
   bool? isLoading = false;
 
   @observable
+  bool canInteract = false;
+
+  @observable
   ObservableList<CompanyAsset> companyAssets = ObservableList<CompanyAsset>();
 
   @observable
@@ -26,6 +29,9 @@ abstract class AssetsScreenStoreBase with Store {
   }
 
   @action
+  void setCanInteract(bool value) => canInteract = value;
+
+  @action
   void setLocations(List<Location> value) {
     locations.clear();
     locations.addAll(value);
@@ -35,6 +41,7 @@ abstract class AssetsScreenStoreBase with Store {
   void reset() {
     companyAssets.clear();
     locations.clear();
+    canInteract = false;
     isLoading = false;
   }
 }

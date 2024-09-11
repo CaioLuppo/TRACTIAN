@@ -25,6 +25,22 @@ mixin _$AssetsScreenStore on AssetsScreenStoreBase, Store {
     });
   }
 
+  late final _$canInteractAtom =
+      Atom(name: 'AssetsScreenStoreBase.canInteract', context: context);
+
+  @override
+  bool get canInteract {
+    _$canInteractAtom.reportRead();
+    return super.canInteract;
+  }
+
+  @override
+  set canInteract(bool value) {
+    _$canInteractAtom.reportWrite(value, super.canInteract, () {
+      super.canInteract = value;
+    });
+  }
+
   late final _$companyAssetsAtom =
       Atom(name: 'AssetsScreenStoreBase.companyAssets', context: context);
 
@@ -83,6 +99,17 @@ mixin _$AssetsScreenStore on AssetsScreenStoreBase, Store {
   }
 
   @override
+  void setCanInteract(bool value) {
+    final _$actionInfo = _$AssetsScreenStoreBaseActionController.startAction(
+        name: 'AssetsScreenStoreBase.setCanInteract');
+    try {
+      return super.setCanInteract(value);
+    } finally {
+      _$AssetsScreenStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setLocations(List<Location> value) {
     final _$actionInfo = _$AssetsScreenStoreBaseActionController.startAction(
         name: 'AssetsScreenStoreBase.setLocations');
@@ -94,9 +121,21 @@ mixin _$AssetsScreenStore on AssetsScreenStoreBase, Store {
   }
 
   @override
+  void reset() {
+    final _$actionInfo = _$AssetsScreenStoreBaseActionController.startAction(
+        name: 'AssetsScreenStoreBase.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$AssetsScreenStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isLoading: ${isLoading},
+canInteract: ${canInteract},
 companyAssets: ${companyAssets},
 locations: ${locations}
     ''';

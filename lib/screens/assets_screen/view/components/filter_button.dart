@@ -4,12 +4,16 @@ class FilterButton extends StatelessWidget {
   final String text;
   final String iconPath;
   final FilterType filterType;
+  final AssetsScreenViewModel viewModel;
+  final VoidCallback onFinishSearch;
 
   const FilterButton({
     super.key,
     required this.text,
     required this.iconPath,
     required this.filterType,
+    required this.viewModel,
+    required this.onFinishSearch,
   });
 
   @override
@@ -48,13 +52,15 @@ class FilterButton extends StatelessWidget {
                   )
                 : null,
           ),
-          onPressed: () {
-            if (filterType == FilterType.energySensor) {
-              store.toggleEnergyFilter();
-            } else if (filterType == FilterType.critical) {
-              store.toggleAlertFilter();
-            }
-          },
+          onPressed: viewModel.canInteract
+              ? () {
+                  if (filterType == FilterType.energySensor) {
+                    store.toggleEnergyFilter(viewModel, onFinishSearch);
+                  } else if (filterType == FilterType.critical) {
+                    store.toggleAlertFilter(viewModel, onFinishSearch);
+                  }
+                }
+              : () {},
           child: Row(
             children: [
               SvgPicture.asset(

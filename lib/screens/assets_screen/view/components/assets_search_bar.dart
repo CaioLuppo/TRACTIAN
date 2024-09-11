@@ -3,17 +3,20 @@ part of '../assets_screen.view.dart';
 class AssetsSearchBar extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  final bool disabled;
 
   const AssetsSearchBar({
     super.key,
     this.onChanged,
     this.controller,
+    this.disabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
       controller: controller,
+      enabled: !disabled,
       onChanged: onChanged,
       shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),

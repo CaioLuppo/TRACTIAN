@@ -60,7 +60,13 @@ class _AssetsScreenState extends State<AssetsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(children: [header, const SizedBox(height: 8), tree]),
+        child: Column(
+          children: [
+            getHeader(viewModel),
+            const SizedBox(height: 8),
+            tree,
+          ],
+        ),
       ),
     );
   }
@@ -69,15 +75,6 @@ class _AssetsScreenState extends State<AssetsScreen> {
     return Expanded(
       child: Observer(
         builder: (context) {
-          final List<TreeNodeWidget> tree = viewModel.tree != null
-              ? viewModel.searchAssetsInTree(
-                  viewModel.tree!.map((e) => TreeNodeWidget(node: e)).toList(),
-                  controller.text,
-                  alertFilterEnabled: viewModel.alertFilterEnabled,
-                  energyFilterEnabled: viewModel.energyFilterEnabled,
-                )
-              : <TreeNodeWidget>[];
-
           if (viewModel.isLoading == true) {
             return const LoadingWidget(
               message: AppStrings.loadingAssets,
@@ -86,9 +83,11 @@ class _AssetsScreenState extends State<AssetsScreen> {
             return const TryAgainWidget(
               message: AppStrings.errorLoadingAssets,
             );
-          } else if (viewModel.tree!.isEmpty || tree.isEmpty) {
+          } else if (viewModel.tree!.isEmpty || viewModel.searchTree == []) {
             return const Center(child: Text(AppStrings.noAssetsFound));
           }
+
+          final tree = viewModel.searchTree ?? viewModel.tree!.map((e) => TreeNodeWidget(node: e)).toList();
 
           return ListView.builder(
             itemCount: tree.length,
@@ -99,16 +98,31 @@ class _AssetsScreenState extends State<AssetsScreen> {
     );
   }
 
-  Widget get header {
+  Widget getHeader(AssetsScreenViewModel viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AssetsSearchBar(
-          controller: controller,
-          onChanged: (_) => setState(() {}),
+        Observer(
+          builder: (context) {
+            return AssetsSearchBar(
+              controller: controller,
+              disabled: !viewModel.canInteract,
+              onChanged: (text) async {
+                if (viewModel.tree != null) {
+                  debugPrint('Searching');
+                  viewModel.searchText = text;
+                  await viewModel.searchAssetsInTreeInIsolate();
+                }
+                setState(() {});
+              },
+            );
+          }
         ),
         const SizedBox(height: 16),
-        const FilterHeader(),
+        FilterHeader(
+          viewModel: viewModel,
+          onFinishSearch: () => setState(() {}),
+        ),
       ],
     );
   }
@@ -116,6 +130,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
   @override
   void dispose() {
     controller.dispose();
+    viewModel.dispose();
     super.dispose();
   }
 }

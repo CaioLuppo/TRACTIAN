@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:mobx/mobx.dart';
+import 'package:tractian/screens/assets_screen/view_model/assets_screen.viewmodel.dart';
 part 'search_store.g.dart';
 
 class SearchStore = SearchStoreBase with _$SearchStore;
@@ -14,13 +17,15 @@ abstract class SearchStoreBase with Store {
   String? searchEntry;
 
   @action
-  void toggleEnergyFilter() {
+  void toggleEnergyFilter(AssetsScreenViewModel viewModel, VoidCallback onFinishSearch) {
     energyFilterEnabled = !energyFilterEnabled;
+    viewModel.searchAssetsInTreeInIsolate().then((_) => onFinishSearch());
   }
 
   @action
-  void toggleAlertFilter() {
+  void toggleAlertFilter(AssetsScreenViewModel viewModel, VoidCallback onFinishSearch) {
     alertFilterEnabled = !alertFilterEnabled;
+    viewModel.searchAssetsInTreeInIsolate().then((_) => onFinishSearch());
   }
 
   @action

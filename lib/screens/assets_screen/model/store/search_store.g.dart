@@ -61,22 +61,24 @@ mixin _$SearchStore on SearchStoreBase, Store {
       ActionController(name: 'SearchStoreBase', context: context);
 
   @override
-  void toggleEnergyFilter() {
+  void toggleEnergyFilter(
+      AssetsScreenViewModel viewModel, VoidCallback onFinishSearch) {
     final _$actionInfo = _$SearchStoreBaseActionController.startAction(
         name: 'SearchStoreBase.toggleEnergyFilter');
     try {
-      return super.toggleEnergyFilter();
+      return super.toggleEnergyFilter(viewModel, onFinishSearch);
     } finally {
       _$SearchStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void toggleAlertFilter() {
+  void toggleAlertFilter(
+      AssetsScreenViewModel viewModel, VoidCallback onFinishSearch) {
     final _$actionInfo = _$SearchStoreBaseActionController.startAction(
         name: 'SearchStoreBase.toggleAlertFilter');
     try {
-      return super.toggleAlertFilter();
+      return super.toggleAlertFilter(viewModel, onFinishSearch);
     } finally {
       _$SearchStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -88,6 +90,17 @@ mixin _$SearchStore on SearchStoreBase, Store {
         name: 'SearchStoreBase.setSearchEntry');
     try {
       return super.setSearchEntry(value);
+    } finally {
+      _$SearchStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void reset() {
+    final _$actionInfo = _$SearchStoreBaseActionController.startAction(
+        name: 'SearchStoreBase.reset');
+    try {
+      return super.reset();
     } finally {
       _$SearchStoreBaseActionController.endAction(_$actionInfo);
     }
