@@ -1,9 +1,21 @@
-# TRACTIAN - Mobile Challenge
+# TRACTIAN - Mobile Challenge (PT-BR Version: <a href="./README-PTBR.md">click here</a>)
+
+## Summary 📝
+
+- [TRACTIAN - Mobile Challenge (PT-BR Version: click here)](#tractian---mobile-challenge-pt-br-version-click-here)
+  - [Summary 📝](#summary-)
+  - [Challenge 🐱‍👤](#challenge-)
+  - [Showcase Video 🎥](#showcase-video-)
+  - [What could be done better 🤔](#what-could-be-done-better-)
+  - [What I learned 📚](#what-i-learned-)
+  - [My Touches 🎨](#my-touches-)
+  - [Thank You! 🙏](#thank-you-)
+
 
 ## Challenge 🐱‍👤
 The challenge is to create a mobile application that consumes the Tractian API and displays the data in a user-friendly tree structure, allowing the results to be filtered by name, status (critical) and sensor type (energy).
 
-### Showcase Video 🎥
+## Showcase Video 🎥
 [![Showcase Video](https://img.youtube.com/vi/lB086EoCvzg/0.jpg)](https://youtu.be/lB086EoCvzg)
 
 ## What could be done better 🤔
