@@ -10,7 +10,6 @@ import 'package:tractian/model/company_asset.model.dart';
 import 'package:tractian/model/location.model.dart';
 import 'package:tractian/screens/assets_screen/model/store/assets_screen_store.dart';
 import 'package:tractian/screens/assets_screen/model/store/search_store.dart';
-import 'package:tractian/screens/assets_screen/view/assets_screen.view.dart';
 
 class AssetsScreenViewModel {
   final String companyId;
