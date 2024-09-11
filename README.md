@@ -1,5 +1,7 @@
 # TRACTIAN - Mobile Challenge (PT-BR Version: <a href="./README-PTBR.md">click here</a>)
 
+Download it here: <a href="https://github.com/CaioLuppo/TRACTIAN/releases/download/v1.0.0/challenge_app-v1.0.0.apk">Download APP</a>
+
 ## Summary 📝
 - [Challenge 🐱‍👤](#challenge-)
 - [Showcase Video 🎥](#showcase-video-)
