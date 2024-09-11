@@ -11,7 +11,7 @@ The challenge is to create a mobile application that consumes the Tractian API a
 - The recursive function that builds the tree could be optimized to avoid unnecessary rebuilds, or even use a different approach to build the tree.
 - A better approach using isolates for the searching feature, to avoid **freezes when filtering** too much data as in the **third unit**.
 - More search filters, other than the ones requested in the challenge.
-**(API)** - In a real-world scenario, the API could have a better structure to avoid unnecessary data rework, like reordering the data to build the tree.
+- **(API)** - In a real-world scenario, the API could have a better structure to avoid unnecessary data rework, like reordering the data to build the tree.
 
 ## What I learned 📚
 - More about Flutter's isolates and how to use them in different scenarios, other than the ones I've used before.
